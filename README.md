@@ -3,61 +3,61 @@ Just last week Daniel Savage published a list on TechNet Wiki with all managemen
 
 In short the script grabs the names and the links for all management packs on the site. Than it goes trough every MP link. From every MP page gets the version of it and all download links (msi, guides and etc.). Than creates a directory for that MP and subdirectory with the version number and downloads all files in it.
 
-#Update 1:
+##Update 1:
 
 Not so long ago I’ve wrote a script that can download all SCOM Management Packs released by Microsoft. Unfortunately Microsoft has decided to change the interface of their download pages and didn’t asked me for approval Smile. Because of that the script stopped to work as it was dependent on the layout of the download web pages. I’ve decided to give it a try to fix the script. Looked at the layout of the new download page. Change a bit the logic and some lines and viola the script is working again.
 
  
 
-#Update 2:
+##Update 2:
 
 Little improvements were made to this script. All of them were contributed by AnthonyBailey:
 
-    The script now checks if the folder for the version already exists and if only there is not such folder than downloads the MP;
-    When MP is downloaded successfully it is written in a log file; 
+* The script now checks if the folder for the version already exists and if only there is not such folder than downloads the MP;
+* When MP is downloaded successfully it is written in a log file; 
 
 With these improvements you can run the script with schedule task and configure SCOM to monitor the log that way you can get alerted when new MP is available. All thanks to AnthonyBailey.
 
-#Update 3:
+##Update 3:
 
-    Microsoft has made some changes to the code of the download pages again so the script was not able to get the version of the MP. Made changes to work with the new code.
-    The script now checks if MP web pages is invoked successfully  
-    If MP Page is not invoked successfully error appears. Error is also written in a Error Log.
-    Improvements on check if MP is already downloaded 
-    MP download links are displayed on separate lines
-    Changes section was made more readable format 
+* Microsoft has made some changes to the code of the download pages again so the script was not able to get the version of the MP. Made changes to work with the new code.
+* The script now checks if MP web pages is invoked successfully  
+* If MP Page is not invoked successfully error appears. Error is also written in a Error Log.
+* Improvements on check if MP is already downloaded 
+* MP download links are displayed on separate lines
+* Changes section was made more readable format 
 
-#Update 4:
+##Update 4:
 
-    Improvements on getting the confirmation link for each MP.
-    The script now also grabs the date the MP was added to Microsoft's catalog and adds this to the logs/screen output 
-    Any duplicate download links are removed before downloading as some download pages have duplicate files in the html 
-    Improvements on check if MP is already downloaded  
+* Improvements on getting the confirmation link for each MP.
+* The script now also grabs the date the MP was added to Microsoft's catalog and adds this to the logs/screen output 
+* Any duplicate download links are removed before downloading as some download pages have duplicate files in the html 
+* Improvements on check if MP is already downloaded  
 
-#Update: 5:
+##Update: 5:
 
-    Removed -and ($_.InnerHTML -like "*This link*") as some people experienced errors 
+* Removed -and ($_.InnerHTML -like "*This link*") as some people experienced errors 
 
-#Update 6:
+##Update 6:
 
-    For some people v2.3 is working fine and v.2.4 not and vise versa. Beacuse of that I've attached v2.3 as download and v2.4 you can copy directly from below. That way you have both version available in the Gallery. 
+* For some people v2.3 is working fine and v.2.4 not and vise versa. Beacuse of that I've attached v2.3 as download and v2.4 you can copy directly from below. That way you have both version available in the Gallery. 
 
-#Update 7:
+##Update 7:
 
-    Using invoke-webrequest was causing cookie prompt dialog to appear due to changes on Microsoft download pages. Replaced it with .net framework function. Thanks to my co-worker Georgi Ivanov for helping me in this.
-    Replaced Write-Host with Write-Output. Accodring to Jeffrey Snover and Don Jones a puppy dies every time someone is using Write-Host :)  
-    Added additional logic to check every file if exists not only the version folder 
-    MP version, Published date and download links are now being get by different way as invoke-webrequest is not used 
+* Using invoke-webrequest was causing cookie prompt dialog to appear due to changes on Microsoft download pages. Replaced it with .net framework function. Thanks to my co-worker Georgi Ivanov for helping me in this.
+* Replaced Write-Host with Write-Output. Accodring to Jeffrey Snover and Don Jones a puppy dies every time someone is using Write-Host :)  
+* Added additional logic to check every file if exists not only the version folder 
+* MP version, Published date and download links are now being get by different way as invoke-webrequest is not used 
 
-#Update 8:
+##Update 8:
 
-    Damian Flynn is now author of teh script also
-    Refactored the script to a powershell module, and split the code into functions to ease support and prepare for some automation ;) 
-    added Write-CMTraceLog - to enabled it execute   Get-SCOMManagementPacks -CMTrace
-    removed two download links that are incorrectly gathered at the beginning 
+* Damian Flynn is now author of teh script also
+* Refactored the script to a powershell module, and split the code into functions to ease support and prepare for some automation ;) 
+* added Write-CMTraceLog - to enabled it execute   Get-SCOMManagementPacks -CMTrace
+* removed two download links that are incorrectly gathered at the beginning 
 
-#Update 9:
+##Update 9:
 
-    Added Date to the Output object as requested
-    Changed the behavious for the Write-CMTrace function to actually use the supplied log path, and not just the default (Sorry that was a bug)
-    Added a switch to flag that MSI files should be extracted, based on a script from Cameron Fuller. Just add -Extract and enjoy. 
+* Added Date to the Output object as requested
+* Changed the behavious for the Write-CMTrace function to actually use the supplied log path, and not just the default (Sorry that was a bug)
+* Added a switch to flag that MSI files should be extracted, based on a script from Cameron Fuller. Just add -Extract and enjoy. 
