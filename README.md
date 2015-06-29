@@ -60,4 +60,4 @@ With these improvements you can run the script with schedule task and configure 
 
 * Added Date to the Output object as requested
 * Changed the behavious for the Write-CMTrace function to actually use the supplied log path, and not just the default (Sorry that was a bug)
-* Added a switch to flag that MSI files should be extracted, based on a script from Cameron Fuller. Just add -Extract and enjoy. 
+* Added a switch to flag that MSI files should be extracted, based on a script from [Cameron Fuller](https://twitter.com/cfullermvp). Just add -Extract and enjoy. 
