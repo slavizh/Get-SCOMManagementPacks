@@ -1,22 +1,22 @@
 # Get-SCOMManagementPacks
-Just last week Daniel Savage published a list on [TechNet Wiki](http://social.technet.microsoft.com/wiki/contents/articles/16174.microsoft-management-packs.aspx) with all management packs for OpsMgr 2007, R2 and 2012. A couple of days later Stefan Stranger wrote Finding Management Packs from Microsoft Download website using PowerShell and provided a small PowerShell script that provides a list with the management packs from that site and links to them. After reading that post I was wondering wouldn’t be cool if you get the names of all management packs and their links and download all of them with their guides also. And when you download them to be able to organize them in structure that includes the name of the MP and its version. Instead of writing to Stefan I’ve said to myself – What the hell I will try to make that script. I do not have any big experience with PowerShell and it was not easy to built the script but because I’ve managed to create this proves that PowerShell is easy to learn but you have to be persistent. During the creation of the script I’ve noticed that some of the links on the page were incorrect so I’ve corrected them. The script requires PowerShell v3.
+Just last week Daniel Savage published a list on [TechNet Wiki](http://social.technet.microsoft.com/wiki/contents/articles/16174.microsoft-management-packs.aspx) with all management packs for OpsMgr 2007, R2 and 2012. A couple of days later [Stefan Stranger](https://social.technet.microsoft.com/profile/stefan%20stranger/) wrote [Finding Management Packs from Microsoft Download website using PowerShell](http://blogs.technet.com/b/stefan_stranger/archive/2013/03/13/finding-management-packs-from-microsoft-download-website-using-powershell.aspx) and provided a small PowerShell script that provides a list with the management packs from that site and links to them. After reading that post I was wondering wouldn’t be cool if you get the names of all management packs and their links and download all of them with their guides also. And when you download them to be able to organize them in structure that includes the name of the MP and its version. Instead of writing to Stefan I’ve said to myself – What the hell I will try to make that script. I do not have any big experience with PowerShell and it was not easy to built the script but because I’ve managed to create this proves that PowerShell is easy to learn but you have to be persistent. During the creation of the script I’ve noticed that some of the links on the page were incorrect so I’ve corrected them. **The script requires PowerShell v3**.
 
 In short the script grabs the names and the links for all management packs on the site. Than it goes trough every MP link. From every MP page gets the version of it and all download links (msi, guides and etc.). Than creates a directory for that MP and subdirectory with the version number and downloads all files in it.
 
 ##Update 1:
 
-Not so long ago I’ve wrote a script that can download all SCOM Management Packs released by Microsoft. Unfortunately Microsoft has decided to change the interface of their download pages and didn’t asked me for approval Smile. Because of that the script stopped to work as it was dependent on the layout of the download web pages. I’ve decided to give it a try to fix the script. Looked at the layout of the new download page. Change a bit the logic and some lines and viola the script is working again.
+Not so long ago I’ve wrote a [script that can download all SCOM Management Packs](https://cloudadministrator.wordpress.com/2013/03/16/download-all-microsoft-management-packs-for-scom-2007-r2-and-2012-in-bulk-with-powershell/) released by Microsoft. Unfortunately Microsoft has decided to change the interface of their download pages and didn’t asked me for approval Smile. Because of that the script stopped to work as it was dependent on the layout of the download web pages. I’ve decided to give it a try to fix the script. Looked at the layout of the new download page. Change a bit the logic and some lines and viola the script is working again.
 
  
 
 ##Update 2:
 
-Little improvements were made to this script. All of them were contributed by AnthonyBailey:
+Little improvements were made to this script. All of them were contributed by [AnthonyBailey](https://gallery.technet.microsoft.com/site/profile?userName=AnthonyBaileyCDW):
 
 * The script now checks if the folder for the version already exists and if only there is not such folder than downloads the MP;
 * When MP is downloaded successfully it is written in a log file; 
 
-With these improvements you can run the script with schedule task and configure SCOM to monitor the log that way you can get alerted when new MP is available. All thanks to AnthonyBailey.
+With these improvements you can run the script with schedule task and configure SCOM to monitor the log that way you can get alerted when new MP is available. All thanks to [AnthonyBailey](https://gallery.technet.microsoft.com/site/profile?userName=AnthonyBaileyCDW).
 
 ##Update 3:
 
@@ -51,7 +51,7 @@ With these improvements you can run the script with schedule task and configure 
 
 ##Update 8:
 
-* Damian Flynn is now author of teh script also
+* [Damian Flynn](http://www.damianflynn.com/) is now author of teh script also
 * Refactored the script to a powershell module, and split the code into functions to ease support and prepare for some automation ;) 
 * added Write-CMTraceLog - to enabled it execute   Get-SCOMManagementPacks -CMTrace
 * removed two download links that are incorrectly gathered at the beginning 
