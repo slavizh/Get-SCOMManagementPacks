@@ -43,7 +43,7 @@
 # Version 2.5 Changes:                                                                                                                                                      # 
 # - Using invoke-webrequest was causing cookie prompt dialog to appear due to changes on Microsoft download pages. Replaced it with .net framework function. Thanks to my   #  
 #   co-worker Georgi Ivanov for helping me in this                                                                                                                          # 
-# - Replaced Write-Host with Write-Output. Accodring to Jeffrey Snover and Don Jones a puppy dies every time someone is using Write-Host :)                                 # 
+# - Replaced Write-Host with Write-Output. According to Jeffrey Snover and Don Jones a puppy dies every time someone is using Write-Host :)                                 # 
 # - Added additional logic to check every file if exists not only the version folder                                                                                        # 
 # - MP version, Published date and download links are now being get by different way as invoke-webrequest is not used                                                       # 
 ############################################################################################################################################################################# 
@@ -60,7 +60,7 @@
  ############################################################################################################################################################################# 
 # Version 3.0.1 Changes:                                                                                                                                                    # 
 # - Date: 28 Aug 2014 - Added Date to the Output object as requested                                                                                                        # 
-# - Date: 28 Aug 2014 - Changed the behavious for the Write-CMTrace function to actually use the supplied log path, and not just the default (Sorry that was a bug)         # 
+# - Date: 28 Aug 2014 - Changed the behaviors for the Write-CMTrace function to actually use the supplied log path, and not just the default (Sorry that was a bug)         # 
 # - Date: 28 Aug 2014 - Added a switch to flag that MSI files should be extracted, based on a script from Cameron Fuller. Just add -Extract and enjoy.                      # 
 ############################################################################################################################################################################# 
 
@@ -250,11 +250,11 @@ function Get-SCOMManagementPacks{
    Get-SCOMManagementPacks is a PowerShell function to enumerate and download all currently available MPs from Microsoft Download servers.
 .DESCRIPTION
    Get-SCOMManagementPacks is a PowerShell function which connected to the Microsoft SCOM Wiki Page on Technet, to determine the list of currently
-   available managmenent packs. This list is then parsed and downloaded to your local system using a structured folder layout, based on the name
+   available managemenent packs. This list is then parsed and downloaded to your local system using a structured folder layout, based on the name
    and version of the management pack. 
    Optionally, the download packaged will also be extracted into a subfolder of the current version.
-   This function provides feedback on progress, and supplies an object based output which you can feed to other commands to determine what occured during processing
-   The only pre-requesite for this script is internet access, and permission to save files on the destination
+   This function provides feedback on progress, and supplies an object based output which you can feed to other commands to determine what occurred during processing
+   The only pre-requisite for this script is internet access, and permission to save files on the destination
 
    Status options include Unchanged, New, Updated, Extracted, New and Extracted, Updated and Extracted
 .EXAMPLE
@@ -264,15 +264,15 @@ function Get-SCOMManagementPacks{
 .EXAMPLE
    Get-SCOMManagementPacks -CMTrace
 
-   Output all logging information from the funcation in CMTrace friendly format
+   Output all logging information from the function in CMTrace friendly format
 .EXAMPLE
     Get-SCOMManagementPacks -MPPath C:\MPs\Microsoft -CMTrace -Extract | ? {$_.status -notlike "Unchanged"} | sort status 
 
-    Download, Extract and Log, reporting on all Management Packs which have changed since the previsous execution
+    Download, Extract and Log, reporting on all Management Packs which have changed since the previous execution
 .NOTES
    For more information, see the related blog post at www.cloudadministrator.com and www.damianflynn.com
 .FUNCTIONALITY
-   Provides an automated delivery mechanism to maintain a local repository of current Managment Packs issued by Microsoft.
+   Provides an automated delivery mechanism to maintain a local repository of current Management Packs issued by Microsoft.
 #>
     param ( 
         [Parameter(Mandatory=$false)] 

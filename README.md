@@ -1,7 +1,7 @@
 # Get-SCOMManagementPacks
-Just last week Daniel Savage published a list on [TechNet Wiki](http://social.technet.microsoft.com/wiki/contents/articles/16174.microsoft-management-packs.aspx) with all management packs for OpsMgr 2007, R2 and 2012. A couple of days later [Stefan Stranger](https://social.technet.microsoft.com/profile/stefan%20stranger/) wrote [Finding Management Packs from Microsoft Download website using PowerShell](http://blogs.technet.com/b/stefan_stranger/archive/2013/03/13/finding-management-packs-from-microsoft-download-website-using-powershell.aspx) and provided a small PowerShell script that provides a list with the management packs from that site and links to them. After reading that post I was wondering wouldn’t be cool if you get the names of all management packs and their links and download all of them with their guides also. And when you download them to be able to organize them in structure that includes the name of the MP and its version. Instead of writing to Stefan I’ve said to myself – What the hell I will try to make that script. I do not have any big experience with PowerShell and it was not easy to built the script but because I’ve managed to create this proves that PowerShell is easy to learn but you have to be persistent. During the creation of the script I’ve noticed that some of the links on the page were incorrect so I’ve corrected them. **The script requires PowerShell v3**.
+Just last week Daniel Savage published a list on [TechNet Wiki](http://social.technet.microsoft.com/wiki/contents/articles/16174.microsoft-management-packs.aspx) with all management packs for OpsMgr 2007, R2 and 2012. A couple of days later [Stefan Stranger](https://social.technet.microsoft.com/profile/stefan%20stranger/) wrote [Finding Management Packs from Microsoft Download website using PowerShell](http://blogs.technet.com/b/stefan_stranger/archive/2013/03/13/finding-management-packs-from-microsoft-download-website-using-powershell.aspx) and provided a small PowerShell script that provides a list with the management packs from that site and links to them. After reading that post I was wondering wouldn’t be cool if you get the names of all management packs and their links and download all of them with their guides also. And when you download them to be able to organize them in structure that includes the name of the MP and its version. Instead of writing to Stefan I’ve said to myself – What the hell I will try to make that script. I do not have any big experience with PowerShell and it was not easy to build the script but because I’ve managed to create this proves that PowerShell is easy to learn but you have to be persistent. During the creation of the script I’ve noticed that some of the links on the page were incorrect so I’ve corrected them. **The script requires PowerShell v3**.
 
-In short the script grabs the names and the links for all management packs on the site. Than it goes trough every MP link. From every MP page gets the version of it and all download links (msi, guides and etc.). Than creates a directory for that MP and subdirectory with the version number and downloads all files in it.
+In short the script grabs the names and the links for all management packs on the site. Than it goes through every MP link. From every MP page gets the version of it and all download links (msi, guides and etc.). Than creates a directory for that MP and subdirectory with the version number and downloads all files in it.
 
 ##Update 1:
 
@@ -40,18 +40,18 @@ With these improvements you can run the script with schedule task and configure 
 
 ##Update 6:
 
-* For some people v2.3 is working fine and v.2.4 not and vise versa. Beacuse of that I've attached v2.3 as download and v2.4 you can copy directly from below. That way you have both version available in the Gallery. 
+* For some people v2.3 is working fine and v.2.4 not and vise versa. Because of that I've attached v2.3 as download and v2.4 you can copy directly from below. That way you have both version available in the Gallery. 
 
 ##Update 7:
 
 * Using invoke-webrequest was causing cookie prompt dialog to appear due to changes on Microsoft download pages. Replaced it with .net framework function. Thanks to my co-worker Georgi Ivanov for helping me in this.
-* Replaced Write-Host with Write-Output. Accodring to Jeffrey Snover and Don Jones a puppy dies every time someone is using Write-Host :)  
+* Replaced Write-Host with Write-Output. According to Jeffrey Snover and Don Jones a puppy dies every time someone is using Write-Host :)  
 * Added additional logic to check every file if exists not only the version folder 
 * MP version, Published date and download links are now being get by different way as invoke-webrequest is not used 
 
 ##Update 8:
 
-* [Damian Flynn](http://www.damianflynn.com/) is now author of teh script also
+* [Damian Flynn](http://www.damianflynn.com/) is now author of the script also
 * Refactored the script to a powershell module, and split the code into functions to ease support and prepare for some automation ;) 
 * added Write-CMTraceLog - to enabled it execute   Get-SCOMManagementPacks -CMTrace
 * removed two download links that are incorrectly gathered at the beginning 
@@ -59,5 +59,5 @@ With these improvements you can run the script with schedule task and configure 
 ##Update 9:
 
 * Added Date to the Output object as requested
-* Changed the behavious for the Write-CMTrace function to actually use the supplied log path, and not just the default (Sorry that was a bug)
+* Changed the behaviors for the Write-CMTrace function to actually use the supplied log path, and not just the default (Sorry that was a bug)
 * Added a switch to flag that MSI files should be extracted, based on a script from [Cameron Fuller](https://twitter.com/cfullermvp). Just add -Extract and enjoy. 
