@@ -153,7 +153,7 @@
         - Edits: Gabriel Taylor
         - Date: 16 March 2016
         - Standardized PowerShell formatting to improve readability and consistency
-        - Moved the Help and version history into a comment block accessible via PowerShell
+        - Moved the Help and version history into a comment block accessible via PowerShell's Get-Help cmdlet
         - Expanded the Help to include parameter descriptions and more examples
         - Refactored the script to be ran via the command line, thus removing any need to import it as a module or edit the script internals
         - Applied numerous PowerShell best practices
