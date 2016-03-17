@@ -319,7 +319,7 @@ function Get-MSDownloadObjects{
             $Status = "Success"
 
             ## Find the Download Links
-            $DLURISet = $HTTPData | Select-String -AllMatches '{url:"(.+?)"' | Select-Object -ExpandProperty Matches | Select-Object -ExpandProperty Value
+            $DLURISet = $HTTPData | Select-String -Pattern '{url:"(.+?)"' -AllMatches | Select-Object -ExpandProperty Matches | Select-Object -ExpandProperty Value 
 
             foreach($DLURIPath in $DLURISet) {
                 $DLURIPath = $DLURIPath.Replace('{url:"','').TrimEnd()
@@ -379,7 +379,7 @@ function Get-MSDownloadFile {
         }
 
         ## Report status
-        New-Object PSObject -Property @{
+        New-Object -TypeName PSObject -Property @{
             "File URI" = $URI
             "Filename" = $FileName
             "Status" = $status
@@ -416,7 +416,7 @@ elseif ($SkipMPsOlderThanMonths) {
 }
 else {
     ## No filter supplied, calculate the number of days since January 1, 2000 (before SCOM existed)
-    [int]$AgeFilter = New-TimeSpan -Start (Get-Date "01-01-2000") -End $StartTime | Select-Object -ExpandProperty Days
+    [int]$AgeFilter = New-TimeSpan -Start (Get-Date -Date "01-01-2000") -End $StartTime | Select-Object -ExpandProperty Days
 }
 #endregion
 
@@ -449,7 +449,7 @@ foreach ($MP in $MPList) {
     $MPName = $MPName.Replace("/"," ").TrimEnd()
 
     ## Report Progress
-    Write-Progress "SCOM MP: $MPName" "Processing $MPCounter of $MPTotalCount" -id 0 -percentComplete (($MPCounter/$MPTotalCount)*100)
+    Write-Progress -Activity "SCOM MP: $MPName" -CurrentOperation "Processing $MPCounter of $MPTotalCount" -Id 0 -PercentComplete (($MPCounter/$MPTotalCount)*100)
 
     ## Get the Details from the Download Pages for the MPs
     $MPDetails = Get-MSDownloadVersionDetails -URI $MPPageLink
@@ -473,7 +473,7 @@ foreach ($MP in $MPList) {
                     Write-CMTraceLog -Type 1 -Component $MPName -Message "New Management Pack '$MPName'; Version '$MPVer' Released on '$MPDate'" -LogFile $MPLogFilePath
                 }
                 else {
-                    "Success,$CurrentDate,$MPName,$MPVer,$MPDate" | Out-File $MPLogFilePath -Append
+                    "Success,$CurrentDate,$MPName,$MPVer,$MPDate" | Out-File -Path $MPLogFilePath -Append
                 }
 
                 ## Create the folder for the New Pack and its initial version
@@ -487,7 +487,7 @@ foreach ($MP in $MPList) {
                         Write-CMTraceLog -Type 1 -Component $MPName -Message "Updated Management Pack '$MPName'; Version '$MPVer' Released on '$MPDate'" -LogFile $MPLogFilePath
                     }
                     else {
-                        "Success,$CurrentDate,$MPName,$MPVer,$MPDate" | Out-File $MPLogFilePath -Append
+                        "Success,$CurrentDate,$MPName,$MPVer,$MPDate" | Out-File -Path $MPLogFilePath -Append
                     }
 
                     # Create the folder for the New Pack version
@@ -544,7 +544,7 @@ foreach ($MP in $MPList) {
             }
 
             ## Report status
-            New-Object PSObject -Property @{
+            New-Object -TypeName PSObject -Property @{
                 "MP Name" = $MPName
                 "Version" = $MPDetails.MSDLVersion
                 "Published" = $MPDetails.MSDLReleaseDate
@@ -556,7 +556,7 @@ foreach ($MP in $MPList) {
     }
     else {
         ## Report Error Status
-        New-Object PSObject -Property @{
+        New-Object -TypeName PSObject -Property @{
             "MP Name" = $MPName
             "Version" = $MPDetails.Status
             "Published" = ""
@@ -570,7 +570,7 @@ foreach ($MP in $MPList) {
         }
         else {
             $CurrentDate = Get-Date -format MM-dd-yy
-            "Failure,$CurrentDate,$MPName" | Out-File "$MPPath\$MPErrorLogFileName" -Append
+            "Failure,$CurrentDate,$MPName" | Out-File -Path "$MPPath\$MPErrorLogFileName" -Append
         }
     }
 }
@@ -582,7 +582,7 @@ if ($CMTrace) {
     Write-CMTraceLog -Type 1 -Component "Script Status" -Message "Process complete; total time was $($TimeSpan)'" -LogFile $MPLogFilePath
 }
 else {
-    "Success,$CurrentDate,ScriptStatus,Process complete; total time was $($TimeSpan)" | Out-File $MPLogFilePath -Append
+    "Success,$CurrentDate,ScriptStatus,Process complete; total time was $($TimeSpan)" | Out-File -Path $MPLogFilePath -Append
 }
 Write-Output -Message "[$(Get-Date)] Script Complete! Process ran for $($TimeSpan)."
 #endregion
