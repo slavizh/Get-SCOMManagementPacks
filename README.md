@@ -92,12 +92,12 @@ Authors and Contributors:
     Gabriel Taylor
 
 Related URLs:
-    Original Git Repo: https://github.com/slavizh/Get-SCOMManagementPacks
-    v4 Git Repo: https://github.com/gabrieljtaylor/Get-SCOMManagementPacks
-    Stanislav's blog post: https://cloudadministrator.wordpress.com/2014/08/26/version-3-0-of-damians-and-my-script-to-download-all-scom-management-packs-with-powershell/
-    Damian Flynn's blog post: http://www.damianflynn.com/2014/08/26/downloading-scom-management-packs-using-powershell/
-    Technet Gallery post (v3.0.1): https://gallery.technet.microsoft.com/scriptcenter/All-Management-Packs-for-37d37902
-    Stefan Stranger's blog post which started it all: http://blogs.technet.com/b/stefan_stranger/archive/2013/03/13/finding-management-packs-from-microsoft-download-website-using-powershell.aspx
+  - Original Git Repo: https://github.com/slavizh/Get-SCOMManagementPacks
+  - v4 Git Repo: https://github.com/gabrieljtaylor/Get-SCOMManagementPacks
+  - Stanislav's blog post: https://cloudadministrator.wordpress.com/2014/08/26/version-3-0-of-damians-and-my-script-to-download-all-scom-management-packs-with-powershell/
+  - Damian Flynn's blog post: http://www.damianflynn.com/2014/08/26/downloading-scom-management-packs-using-powershell/
+  - Technet Gallery post (v3.0.1): https://gallery.technet.microsoft.com/scriptcenter/All-Management-Packs-for-37d37902
+  - Stefan Stranger's blog post which started it all: http://blogs.technet.com/b/stefan_stranger/archive/2013/03/13/finding-management-packs-from-microsoft-download-website-using-powershell.aspx
 
 Current Version: 4.0
 Version History:
