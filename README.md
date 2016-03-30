@@ -1,9 +1,9 @@
 # Get-SCOMManagementPacks
 This is an updated version of the script started by Stanislav Zhelyazkov which is used to process and download all official SCOM management packs based on their presence on the Microsoft SCOM Management Pack Wiki.
 
-I've made a number of changes to the script to make it easier to use, easier to read, and include additional functionality. I'm releasing this as version 4.0 here and will submit a pull request to Stanislav to have the changes merged into his primary repo.
+In this version 4.0 release of the script, a number of changes have been made to make it easier to use, easier to read, and include additional functionality.
 
-The changes I've made in version 4.0 follow:
+The changes made in version 4.0 follow:
 * Standardized PowerShell formatting to improve readability and consistency
 * Moved the Help and version history into a comment block accessible via PowerShell's Get-Help cmdlet
 * Expanded the Help to include parameter descriptions and more examples
