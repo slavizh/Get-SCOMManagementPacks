@@ -99,71 +99,13 @@
         Technet Gallery post (v3.0.1): https://gallery.technet.microsoft.com/scriptcenter/All-Management-Packs-for-37d37902
         Stefan Stranger's blog post which started it all: http://blogs.technet.com/b/stefan_stranger/archive/2013/03/13/finding-management-packs-from-microsoft-download-website-using-powershell.aspx
 
-    Current Version: 4.0
-    Version History:
-    - Version 1.0:
-        - Initial version, gets list of all Management Packs and their links from the TechNet Wiki
-
-    - Version 2.0 Changes:
-        - Microsoft changed the layout of the MP download pages, so the script was updated to get data from the new layout
-
-    - Version 2.1 Changes (Modifications contributed by Anthony Bailey):
-        - Script now checks if MP is already downloaded
-        - Script now writes successful updates to a log file
-            - If the script is set to run as a scheduled task or via other automation, the log file can be monitored to trigger alerts if a new MP version is downloaded.
-
-    - Version 2.2 Changes:
-        - Microsoft updated the code of the download pages again which broke the script. The script was updated to work with the new website code
-        - The script now checks whether or not the Management Pack web pages are invoked successfully
-            - If MP Page is not invoked successfully an error will be written to the output and to an Error Log.
-        - The method of validation for whether or not an MP has already been downloaded has been improved
-        - Script output updated for readability:
-            - Management Pack download links are now displayed on separate lines in the output
-            - Changes section formatting is now in a more readable format
-
-    - Version 2.3 Changes (Modifications contributed by Anthony Bailey):
-        - The method of retrieving the confirmation link for each MP has been improved
-        - The script now also captures the date the MP was added to Microsoft's catalog and adds this to the logs/screen output
-        - Any duplicate download links are removed before downloading (introduced as some download pages have duplicate files in the html)
-        - The method of validation for whether or not an MP has already been downloaded has been improved further
-
-    - Version 2.4 Changes:
-        - Removed -and ($_.InnerHTML -like "*This link*") as some users experienced errors
-
-    - Version 2.5 Changes:
-        - Microsoft updated their download pages in a way that now caused Invoke-WebRequest to trigger a cookie prompt dialog. Replaced usage of Invoke-WebRequest with a function leveraging .NET Framework objects to bypass the prompt. Credit to Georgi Ivanov for assistance in this change.
-        - Implemented new method of retrieving MP version, Published date and download links as part of the removal of Invoke-WebRequest
-        - Replaced Write-Host with Write-Output to conform to PowerShell best practices
-        - Added additional logic to the method of validation for whether or not an MP has already been downloaded which checks the existence of each file in the MP release rather than just the version folder. Any files which do not exist will be re-downloaded.
-
-    - Version 3.0 Changes:
-        - Edits: @Damain_Flynn
-        - Date: 24 Aug 2014
-        - Refactored the script to a PowerShell module and split the code into functions to ease support and enable automation
-        - Added Write-CMTraceLog function and support for CMTrace logging
-        - Removed two download links that were being incorrectly gathered at the beginning
-
-    - Version 3.0.1 Changes:
-        - Date: 28 Aug 2014
-        - Added Date to the Output object as requested
-        - Changed the behaviour for the Write-CMTrace function to use the supplied log path, and not just the default (Sorry that was a bug)
-        - Added a switch to flag that MSI files should be extracted, based on a script from Cameron Fuller. Just add -Extract and enjoy.
-
-    - Version 4.0 Changes
-        - Edits: Gabriel Taylor
-        - Date: 16 March 2016
-        - Standardized PowerShell formatting to improve readability and consistency
-        - Moved the Help and version history into a comment block accessible via PowerShell's Get-Help cmdlet
-        - Expanded the Help to include parameter descriptions and more examples
-        - Refactored the script to be ran via the command line, thus removing any need to import it as a module or edit the script internals
-        - Applied numerous PowerShell best practices
-        - Renamed script file from "Get-All-SCOM-MPs.ps1" to "Get-SCOMManagementPacks.ps1" to align with the name of the Git repository
-        - Reduced the number of Get-Date calls in the Write-CMTraceLog function
-        - Updated the script and functions to support -Verbose
-        - Updated the "Extract" method to remove duplicate .msi files created by the .msi extraction
-        - Updated the script to make the re-download of deleted files optional
-        - Added the "SkipMPsOlderThanDate" and "SkipMPsOlderThanMonths" properties and logic to not process management packs older than the supplied date or age in months
-        - Updated the script to calculate the length of time it took to process and output that to the shell as well as save it to the log.
+    Current Version: 4.1
+    - Version 4.1 Changes
+        - Edits: Stanislav Zhelyazkov
+        - Date: 08 Aptil 2016
+        - Fixed bug in cmtrace function
+        - Fixed bug in output log write
+        - Removed change history from the script. Changes are in Readme.md. Only latest changes will be in the script.
 #>
 
 [CmdletBinding(DefaultParameterSetName="AgeMonths")]
@@ -216,13 +158,13 @@ function Write-CMTraceLog {
 
     process {
         switch ($Type) {
-            1 { $Type = "Info" }
-            2 { $Type = "Warning" }
-            3 { $Type = "Error" }
-            4 { $Type = "Verbose" }
+            1 { $TypeLog = "Info" }
+            2 { $TypeLog = "Warning" }
+            3 { $TypeLog = "Error" }
+            4 { $TypeLog = "Verbose" }
         }
 
-        $LogEntry = "$($Type + ":" + $Message) `$$<$($ModuleName + ":" + $Component)><$(Get-Date -Format "MM-dd-yyyy HH:mm:ss.ffffff")><thread=$pid>" 
+        $LogEntry = "$($TypeLog + ":" + $Message) `$$<$($ModuleName + ":" + $Component)><$(Get-Date -Format "MM-dd-yyyy HH:mm:ss.ffffff")><thread=$pid>" 
 
         $LogEntry | Out-File -Append -Encoding UTF8 -FilePath "filesystem::$LogFile"
     }
@@ -473,7 +415,7 @@ foreach ($MP in $MPList) {
                     Write-CMTraceLog -Type 1 -Component $MPName -Message "New Management Pack '$MPName'; Version '$MPVer' Released on '$MPDate'" -LogFile $MPLogFilePath
                 }
                 else {
-                    "Success,$CurrentDate,$MPName,$MPVer,$MPDate" | Out-File -Path $MPLogFilePath -Append
+                    "Success,$CurrentDate,$MPName,$MPVer,$MPDate" | Out-File -FilePath $MPLogFilePath -Append
                 }
 
                 ## Create the folder for the New Pack and its initial version
@@ -487,7 +429,7 @@ foreach ($MP in $MPList) {
                         Write-CMTraceLog -Type 1 -Component $MPName -Message "Updated Management Pack '$MPName'; Version '$MPVer' Released on '$MPDate'" -LogFile $MPLogFilePath
                     }
                     else {
-                        "Success,$CurrentDate,$MPName,$MPVer,$MPDate" | Out-File -Path $MPLogFilePath -Append
+                        "Success,$CurrentDate,$MPName,$MPVer,$MPDate" | Out-File -FilePath $MPLogFilePath -Append
                     }
 
                     # Create the folder for the New Pack version
@@ -570,7 +512,7 @@ foreach ($MP in $MPList) {
         }
         else {
             $CurrentDate = Get-Date -format MM-dd-yy
-            "Failure,$CurrentDate,$MPName" | Out-File -Path "$MPPath\$MPErrorLogFileName" -Append
+            "Failure,$CurrentDate,$MPName" | Out-File -FilePath "$MPPath\$MPErrorLogFileName" -Append
         }
     }
 }
@@ -582,7 +524,7 @@ if ($CMTrace) {
     Write-CMTraceLog -Type 1 -Component "Script Status" -Message "Process complete; total time was $($TimeSpan)'" -LogFile $MPLogFilePath
 }
 else {
-    "Success,$CurrentDate,ScriptStatus,Process complete; total time was $($TimeSpan)" | Out-File -Path $MPLogFilePath -Append
+    "Success,$CurrentDate,ScriptStatus,Process complete; total time was $($TimeSpan)" | Out-File -FilePath $MPLogFilePath -Append
 }
 Write-Output -Message "[$(Get-Date)] Script Complete! Process ran for $($TimeSpan)."
 #endregion
