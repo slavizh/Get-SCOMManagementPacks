@@ -1,7 +1,7 @@
 # Get-SCOMManagementPacks
 This is an updated version of the script started by Stanislav Zhelyazkov which is used to process and download all official SCOM management packs based on their presence on the Microsoft SCOM Management Pack Wiki.
 
-In this version 4.1 release of the script, a number of changes have been made to make it easier to use, easier to read, and include additional functionality.
+In this version 4.2 release of the script, a number of changes have been made to make it easier to use, easier to read, and include additional functionality.
 
 The changes made in version 4.0 follow:
 * Standardized PowerShell formatting to improve readability and consistency
@@ -22,6 +22,8 @@ The changes made in version 4.1 follow:
 * Fixed bug in output log write
 * Removed change history from the script. Changes are in Readme.md. Only latest changes will be in the script.
 
+Version 4.2 changes:
+* Fixed bug in ReDownloadMissingFiles behavior. ReDownloadMissingFiles setting will now only be applied to existing MP versions; files for new MPs and new versions of existing MPs will now always be downloaded.
 
 ## Description:
 
