@@ -1,7 +1,7 @@
 # Get-SCOMManagementPacks
 This is an updated version of the script started by Stanislav Zhelyazkov which is used to process and download all official SCOM management packs based on their presence on the Microsoft SCOM Management Pack Wiki.
 
-In this version 4.0 release of the script, a number of changes have been made to make it easier to use, easier to read, and include additional functionality.
+In this version 4.1 release of the script, a number of changes have been made to make it easier to use, easier to read, and include additional functionality.
 
 The changes made in version 4.0 follow:
 * Standardized PowerShell formatting to improve readability and consistency
@@ -17,7 +17,13 @@ The changes made in version 4.0 follow:
 * Added the "SkipMPsOlderThanDate" and "SkipMPsOlderThanMonths" properties and logic to not process management packs older than the supplied date or age in months
 * Updated the script to calculate the length of time it took to process and output that to the shell as well as save it to the log.
 
-##Description:
+The changes made in version 4.1 follow:
+* Fixed bug in cmtrace function
+* Fixed bug in output log write
+* Removed change history from the script. Changes are in Readme.md. Only latest changes will be in the script.
+
+
+## Description:
 
 Get-SCOMManagementPacks is a PowerShell script which is used to dynamically enumerate and download currently available SCOM management packs to a specified folder, organizing them by name and version.
 
@@ -31,56 +37,73 @@ The only prerequisite for this script is internet access and permissions to save
 
 Status outputs include  "New", "Unchanged", "Updated", "Extracted", "New and Extracted", and "Updated and Extracted"
 
-##Parameters:
+## Parameters:
 
-MPPath - Optional, default value: "C:\MPs". Specifies the path to the folder where management packs should be downloaded.
+**MPPath** - Optional, default value: "C:\MPs". Specifies the path to the folder where management packs should be downloaded.
 
-MPLogFileName - Optional, default value: "MPUpdates.log". Specifies the name of the log file containing information about downloaded management packs. If the supplied value does not end in ".log", the file extension will be appended.
+**MPLogFileName** - Optional, default value: "MPUpdates.log". Specifies the name of the log file containing information about downloaded management packs. If the supplied value does not end in ".log", the file extension will be appended.
 
-MPErrorLogFileName - Optional, default value: "MPErrorLog.log". Specifies the name of the log file containing information about errors encountered during processing. If the supplied value does not end in ".log", the file extension will be appended.
+**MPErrorLogFileName** - Optional, default value: "MPErrorLog.log". Specifies the name of the log file containing information about errors encountered during processing. If the supplied value does not end in ".log", the file extension will be appended.
 
-ReDownloadMissingFiles - Optional, boolean property, default value = "false". If "true", when processing management packs determined to have been downloaded previously, any files missing from the version folder for the management pack will be redownloaded. Otherwise, the script assumes files were deleted intentionally and does not re-download missing files. Note that, as the script only processes the latest version of a management pack, this only applies to the latest version - older versions will not be downloaded or assessed for missing files.
+**ReDownloadMissingFiles** - Optional, boolean property, default value = "false". If "true", when processing management packs determined to have been downloaded previously, any files missing from the version folder for the management pack will be redownloaded. Otherwise, the script assumes files were deleted intentionally and does not re-download missing files. Note that, as the script only processes the latest version of a management pack, this only applies to the latest version - older versions will not be downloaded or assessed for missing files.
 
-SkipMPsOlderThanDate - Optional, datetime property, no default value. Use to supply a specific date as a filter for processing; any management packs released prior to the supplied date will not be processed. The parameter accepts a datetime object which can be retrieved via the "Get-Date" cmdlet or generated on the spot by entering the date in numeric fashion (e.g., "01-20-2010", "01/20/2010", etc.).
+**SkipMPsOlderThanDate** - Optional, datetime property, no default value. Use to supply a specific date as a filter for processing; any management packs released prior to the supplied date will not be processed. The parameter accepts a datetime object which can be retrieved via the "Get-Date" cmdlet or generated on the spot by entering the date in numeric fashion (e.g., "01-20-2010", "01/20/2010", etc.).
 
-SkipMPsOlderThanMonths - Optional, integer property, no default value. Use to supply a specific number of months as a filter for processing; any management packs released prior to the supplied number of months before the current date will not be processed.
+**SkipMPsOlderThanMonths** - Optional, integer property, no default value. Use to supply a specific number of months as a filter for processing; any management packs released prior to the supplied number of months before the current date will not be processed.
 
-CMTrace - Optional, switch parameter. Enables logging in the CMTrace format for easy use in the CMTrace application.
+**CMTrace** - Optional, switch parameter. Enables logging in the CMTrace format for easy use in the CMTrace application.
 
-Extract - Optional, switch parameter. Enables the automatic extraction of any management packs processed by the script.
+**Extract** - Optional, switch parameter. Enables the automatic extraction of any management packs processed by the script.
 
-##Examples:
+## Examples:
 This example specifies a target location on a network share as a destination for the management packs to be downloaded.
 
->Get-SCOMManagementPacks.ps1 -MPPath "\\SCOMShare\ManagementPacks"
+```PowerShell
+Get-SCOMManagementPacks.ps1 -MPPath "\\SCOMShare\ManagementPacks"
+```
 
-This example changes the default names of the log files and allows the management packs to be saved to the default location. As the file extension is not specified for one of the logs, the ".log" extension will be appended automatically.
+This example changes the default names of the log files and allows the management packs to be saved to the default location. 
+As the file extension is not specified for one of the logs, the ".log" extension will be appended automatically.
 
->Get-SCOMManagementPacks.ps1 -MPLogFileName "MPUpdatesLog" -MPErrorLogFileName "MPUpdateErrors"
+```PowerShell
+Get-SCOMManagementPacks.ps1 -MPLogFileName "MPUpdatesLog" -MPErrorLogFileName "MPUpdateErrors"
+```
 
 This example downloads and extracts the management packs to the default location.
 
->Get-SCOMManagementPacks.ps1 -Extract
+```PowerShell
+Get-SCOMManagementPacks.ps1 -Extract
+```
 
 This example specifies the location for management packs to be downloaded, enables the re-download of missing files, and extracts any MSI files contained in the management packs.
 
->Get-SCOMManagementPacks.ps1 -MPPath "E:\ManagementPacks" -ReDownloadMissingFiles $true -Extract
+```PowerShell
+Get-SCOMManagementPacks.ps1 -MPPath "E:\ManagementPacks" -ReDownloadMissingFiles $true -Extract
+```
 
 This example outputs all logging information from the script into a CMTrace friendly format.
 
->Get-SCOMManagementPacks -CMTrace
+```PowerShell
+Get-SCOMManagementPacks -CMTrace
+```
 
 This example downloads the management packs to a specified location, extracts them, and logs output in a CMTrace friendly format, then filters and sorts the script's output for easy consumption.
 
->Get-SCOMManagementPacks -MPPath "C:\MPs\Microsoft" -CMTrace -Extract | ?{$_.Status -notlike "Unchanged"} | Sort Status
+```PowerShell
+Get-SCOMManagementPacks -MPPath "C:\MPs\Microsoft" -CMTrace -Extract | ?{$_.Status -notlike "Unchanged"} | Sort Status
+```
 
 This example passes a specific date into the script to prevent processing of any management packs released before that date.
 
->Get-SCOMManagementPacks -SkipMPsOlderThanDate "11/21/2013"
+```PowerShell
+Get-SCOMManagementPacks -SkipMPsOlderThanDate "11/21/2013"
+```
 
 This example passes a number of months into the script to prevent processing of any management packs released prior to that many months before the current date.
 
->Get-SCOMManagementPacks -SkipMPsOlderThanMonths 24
+```PowerShell
+Get-SCOMManagementPacks -SkipMPsOlderThanMonths 24
+```
 
 ## Other Information and Version History
 Authors and Contributors:
@@ -164,3 +187,8 @@ Version History:
     - Updated the script to make the re-download of deleted files optional
     - Added the "SkipMPsOlderThanDate" and "SkipMPsOlderThanMonths" properties and logic to not process management packs older than the supplied date or age in months
     - Updated the script to calculate the length of time it took to process and output that to the shell as well as save it to the log.
+
+- Version 4.1 Changes
+    - Fixed bug in cmtrace function
+    - Fixed bug in output log write
+    - Removed change history from the script. Changes are in Readme.md. Only latest changes will be in the script.
