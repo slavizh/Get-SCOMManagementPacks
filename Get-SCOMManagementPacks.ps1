@@ -366,7 +366,7 @@ else {
 ## Pull and format the data from the website
 $MPWikiPageData = Invoke-WebRequest -Uri $MPWikiUri
 $MPList = $MPWikiPageData.Links |
-    Where-Object {($_.href -like "*http://www.microsoft.com/*download*") -and
+    Where-Object {($_.href -like "*http*://www.microsoft.com/*download*") -and
         $_.outerText -notlike "*Link to download page*" -and
         $_.outerText -notlike "Microsoft Download Center" -and
         $_.outerText -notlike "Drivers" } |
