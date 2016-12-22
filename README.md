@@ -1,11 +1,7 @@
 # Get-SCOMManagementPacks
 This is an updated version of the script started by Stanislav Zhelyazkov which is used to process and download all official SCOM management packs based on their presence on the Microsoft SCOM Management Pack Wiki.
 
-<<<<<<< HEAD
 In this version 4.2 release of the script, a number of changes have been made to make it easier to use, easier to read, and include additional functionality.
-=======
-In this version 4.1 release of the script, a number of changes have been made to make it easier to use, easier to read, and include additional functionality.
->>>>>>> refs/remotes/slavizh/master
 
 The changes made in version 4.0 follow:
 * Standardized PowerShell formatting to improve readability and consistency
@@ -26,11 +22,8 @@ The changes made in version 4.1 follow:
 * Fixed bug in output log write
 * Removed change history from the script. Changes are in Readme.md. Only latest changes will be in the script.
 
-<<<<<<< HEAD
 Version 4.2 changes:
 * Fixed bug in ReDownloadMissingFiles behavior. ReDownloadMissingFiles setting will now only be applied to existing MP versions; files for new MPs and new versions of existing MPs will now always be downloaded.
-=======
->>>>>>> refs/remotes/slavizh/master
 
 ## Description:
 
@@ -131,7 +124,7 @@ Related URLs:
   - Technet Gallery post (v3.0.1): https://gallery.technet.microsoft.com/scriptcenter/All-Management-Packs-for-37d37902
   - Stefan Stranger's blog post which started it all: http://blogs.technet.com/b/stefan_stranger/archive/2013/03/13/finding-management-packs-from-microsoft-download-website-using-powershell.aspx
 
-Current Version: 4.0
+Current Version: 4.2
 Version History:
 - Version 1.0:
     - Initial version, gets list of all Management Packs and their links from the TechNet Wiki
@@ -201,3 +194,7 @@ Version History:
     - Fixed bug in cmtrace function
     - Fixed bug in output log write
     - Removed change history from the script. Changes are in Readme.md. Only latest changes will be in the script.
+
+    - Version 4.2 Changes
+    - Fixed bug in ReDownloadMissingFiles behavior
+    - Fixed issue with HTTPS download pages
