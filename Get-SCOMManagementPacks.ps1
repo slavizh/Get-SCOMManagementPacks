@@ -290,7 +290,7 @@ function Get-MSDownloadFile {
         [Parameter(Mandatory=$true)]
         [string]$Path,
         [Parameter(Mandatory=$false)]
-        [bool]$ReplaceMissing = $false
+        [bool]$DownloadFiles = $true
     )
 
     process {
@@ -302,7 +302,7 @@ function Get-MSDownloadFile {
             $status = "File Already Exists"
         }
         else {
-            if ($ReplaceMissing -eq $true) {
+            if ($DownloadFiles -eq $true) {
                 $FileName = $FileName.Replace("[","(")
                 $FileName = $FileName.Replace("]",")")
 
@@ -366,7 +366,7 @@ else {
 ## Pull and format the data from the website
 $MPWikiPageData = Invoke-WebRequest -Uri $MPWikiUri
 $MPList = $MPWikiPageData.Links |
-    Where-Object {($_.href -like "*http://www.microsoft.com/*download*") -and
+    Where-Object {($_.href -like "*http*://www.microsoft.com/*download*") -and
         $_.outerText -notlike "*Link to download page*" -and
         $_.outerText -notlike "Microsoft Download Center" -and
         $_.outerText -notlike "Drivers" } |
@@ -420,6 +420,9 @@ foreach ($MP in $MPList) {
 
                 ## Create the folder for the New Pack and its initial version
                 $MPFolder = New-Item -ItemType Directory -Path "$MPPath\$MPName\$MPVer" -Force -ErrorAction Stop
+
+                ## Set the DownloadFiles property to true
+                $DownloadFiles = $true
             }
             else {
                 if((Test-Path -path "$MPPath\$MPName\$MPVer") -eq $false) {
@@ -434,6 +437,9 @@ foreach ($MP in $MPList) {
 
                     # Create the folder for the New Pack version
                     $MPFolder = New-Item -ItemType Directory -Path "$MPPath\$MPName\$MPVer" -Force -ErrorAction Stop
+
+                    ## Set the DownloadFiles property to true
+                    $DownloadFiles = $true
                 }
                 else {
                     ## Management Pack Version Already Downloaded
@@ -441,6 +447,9 @@ foreach ($MP in $MPList) {
                     if ($CMTrace) {
                         Write-CMTraceLog -Type 1 -Component $MPName -Message "Existing Management Pack '$MPName'; Version '$MPVer' Released on '$MPDate'" -LogFile $MPLogFilePath
                     }
+
+                    ## Set the DownloadFiles property to the value of ReDownloadMissingFiles
+                    $DownloadFiles = $ReDownloadMissingFiles
                 }
             }
 
@@ -449,7 +458,7 @@ foreach ($MP in $MPList) {
             foreach ($DLResource in $MPDownloadObjects) {
                 ## Set DLDetails to Null in order to catch skipped downloads
                 $DLDetails = $null
-                $DLDetails = Get-MSDownloadFile -URI $DLResource.FileURI -Path "$MPPath\$MPName\$MPVer" -ReplaceMissing $ReDownloadMissingFiles
+                $DLDetails = Get-MSDownloadFile -URI $DLResource.FileURI -Path "$MPPath\$MPName\$MPVer" -DownloadFiles $DownloadFiles
 
                 ## Only continue processing if the file was downloaded
                 if ($DLDetails -ne $null) {
