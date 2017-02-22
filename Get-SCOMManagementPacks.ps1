@@ -99,13 +99,12 @@
         Technet Gallery post (v3.0.1): https://gallery.technet.microsoft.com/scriptcenter/All-Management-Packs-for-37d37902
         Stefan Stranger's blog post which started it all: http://blogs.technet.com/b/stefan_stranger/archive/2013/03/13/finding-management-packs-from-microsoft-download-website-using-powershell.aspx
 
-    Current Version: 4.1
-    - Version 4.1 Changes
-        - Edits: Stanislav Zhelyazkov
-        - Date: 08 Aptil 2016
-        - Fixed bug in cmtrace function
-        - Fixed bug in output log write
-        - Removed change history from the script. Changes are in Readme.md. Only latest changes will be in the script.
+    Current Version: 4.2
+    - Version 4.2 Changes
+        - Edits: Gabriel Taylor
+        - Date: 22 December 2016
+        - Fixed bug in ReDownloadMissingFiles behavior.
+        - Fixed issue with HTTPS download pages 
 #>
 
 [CmdletBinding(DefaultParameterSetName="AgeMonths")]
