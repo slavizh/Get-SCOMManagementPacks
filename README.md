@@ -4,12 +4,10 @@ This is an updated version of the script started by Stanislav Zhelyazkov which i
 and download all official SCOM management packs based on their presence on the Microsoft SCOM
 Management Pack Wiki.
 
-Version 4.3 changes by Gabriel Taylor:
+Version 4.4 changes by Lynne Taggart:
 
-* Removed [parameter(Mandatory=$false)] statements (that's a bad practice, my bad)
-* Updated MP Wiki URL to HTTPS
-* Updated Switch parameter validation
-* Updated formatting
+* Fixed bug that didn't allowed pulling Published date and MP version due to MSFT download page layout
+ changes
 
 ## Description
 
@@ -242,3 +240,14 @@ Version History:
 * Version 4.2 Changes
   * Fixed bug in ReDownloadMissingFiles behavior
   * Fixed issue with HTTPS download pages
+ 
+* Version 4.3 Changes:
+  * Removed [parameter(Mandatory=$false)] statements (that's a bad practice, my bad)
+  * Updated MP Wiki URL to HTTPS
+  * Updated Switch parameter validation
+  * Updated formatting
+
+Version 4.4 Changes:
+
+* Fixed bug that didn't allowed pulling Published date and MP version due to MSFT download page layout
+ changes
