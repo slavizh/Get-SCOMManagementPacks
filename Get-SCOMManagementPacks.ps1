@@ -299,8 +299,6 @@ function Get-MSDownloadObjects
 
         if (!($HTTPData.Status -eq "Error"))
         {
-            $Status = "Success"
-
             # Find the Download Links
             $DLURISet = $HTTPData | Select-String -Pattern '{url:"(.+?)"' -AllMatches | Select-Object -ExpandProperty Matches | Select-Object -ExpandProperty Value 
 
@@ -440,7 +438,6 @@ else
 
 # Format the log file names
 [string]$MPLogFilePath = $MPPath + "\" + $MPLogFileName
-[string]$MPErrorLogFilePath = $MPPath + "\" + $MPErrorLogFileName
 #endregion
 
 #region Determine the Max Age of MPs to Process in Days
@@ -528,7 +525,7 @@ foreach ($MP in $MPList)
                 }
 
                 # Create the folder for the New Pack and its initial version
-                $MPFolder = New-Item -ItemType Directory -Path "$MPPath\$MPName\$MPVer" -Force -ErrorAction Stop
+                New-Item -ItemType Directory -Path "$MPPath\$MPName\$MPVer" -Force -ErrorAction Stop | Out-Null
 
                 # Set the DownloadFiles property to true
                 $DownloadFiles = $true
@@ -549,7 +546,7 @@ foreach ($MP in $MPList)
                     }
 
                     # Create the folder for the New Pack version
-                    $MPFolder = New-Item -ItemType Directory -Path "$MPPath\$MPName\$MPVer" -Force -ErrorAction Stop
+                    New-Item -ItemType Directory -Path "$MPPath\$MPName\$MPVer" -Force -ErrorAction Stop | Out-Null
 
                     # Set the DownloadFiles property to true
                     $DownloadFiles = $true
@@ -577,7 +574,7 @@ foreach ($MP in $MPList)
                 $DLDetails = Get-MSDownloadFile -URI $DLResource.FileURI -Path "$MPPath\$MPName\$MPVer" -DownloadFiles $DownloadFiles
 
                 # Only continue processing if the file was downloaded
-                if ($DLDetails -ne $null)
+                if ($null -ne $DLDetails)
                 {
                     $DLInfo += $DLDetails
                     $DLStatus = $DLDetails.Status
