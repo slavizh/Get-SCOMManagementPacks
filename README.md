@@ -4,11 +4,6 @@ This is an updated version of the script started by Stanislav Zhelyazkov which i
 and download all official SCOM management packs based on their presence on the Microsoft SCOM
 Management Pack Wiki.
 
-Version 4.4 changes by Lynne Taggart:
-
-* Fixed bug that didn't allowed pulling Published date and MP version due to MSFT download page layout
- changes
-
 ## Description
 
 Get-SCOMManagementPacks is a powershell script which is used to dynamically enumerate and download
@@ -54,8 +49,8 @@ versions will not be downloaded or assessed for missing files.
 **SkipMPsOlderThanDate** - Optional, datetime property, no default value. Use to supply a specific
 date as a filter for processing; any management packs released prior to the supplied date will not
 be processed. The parameter accepts a datetime object which can be retrieved via the "Get-Date"
-cmdlet or generated on the spot by entering the date in numeric fashion (e.g., "01-20-2010",
-"01/20/2010", etc.).
+cmdlet or generated on the spot by entering the date in numeric fashion (e.g., "2021-01-20",
+"01/20/2021", etc.).
 
 **SkipMPsOlderThanMonths** - Optional, integer property, no default value. Use to supply a specific
 number of months as a filter for processing; any management packs released prior to the supplied
@@ -108,14 +103,14 @@ This example downloads the management packs to a specified location, extracts th
 in a CMTrace friendly format, then filters and sorts the script's output for easy consumption.
 
 ```powershell
-Get-SCOMManagementPacks -MPPath "C:\MPs\Microsoft" -CMTrace -Extract | ?{$_.Status -notlike "Unchanged"} | Sort Status
+Get-SCOMManagementPacks -MPPath "C:\MPs\Microsoft" -CMTrace -Extract | Where-Object {$_.Status -notlike "Unchanged"} | Sort-Object -Property Status
 ```
 
 This example passes a specific date into the script to prevent processing of any management packs
 released before that date.
 
 ```powershell
-Get-SCOMManagementPacks -SkipMPsOlderThanDate "11/21/2013"
+Get-SCOMManagementPacks -SkipMPsOlderThanDate '2021-01-25'
 ```
 
 This example passes a number of months into the script to prevent processing of any management packs
@@ -144,7 +139,6 @@ Related URLs:
 * Technet Gallery post (v3.0.1): https://gallery.technet.microsoft.com/scriptcenter/All-Management-Packs-for-37d37902
 * Stefan Stranger's blog post which started it all: http://blogs.technet.com/b/stefan_stranger/archive/2013/03/13/finding-management-packs-from-microsoft-download-website-using-powershell.aspx
 
-Current Version: 4.3
 Version History:
 
 * Version 1.0:
@@ -154,7 +148,8 @@ Version History:
   * Microsoft changed the layout of the MP download pages, so the script was updated to get data
    from the new layout
 
-* Version 2.1 Changes (Modifications contributed by Anthony Bailey):
+* Version 2.1 Changes:
+  * Edits: Anthony Bailey
   * Script now checks if MP is already downloaded
   * Script now writes successful updates to a log file
   * If the script is set to run as a scheduled task or via other automation, the log file can be
@@ -171,7 +166,8 @@ Version History:
     * Management Pack download links are now displayed on separate lines in the output
     * Changes section formatting is now in a more readable format
 
-* Version 2.3 Changes (Modifications contributed by Anthony Bailey):
+* Version 2.3 Changes:
+  * Edits: Anthony Bailey
   * The method of retrieving the confirmation link for each MP has been improved
   * The script now also captures the date the MP was added to Microsoft's catalog and adds this to
    the logs/screen output
@@ -210,7 +206,7 @@ Version History:
   * Added a switch to flag that MSI files should be extracted, based on a script from Cameron Fuller.
    Just add -Extract and enjoy.
 
-* Version 4.0 Changes
+* Version 4.0 Changes:
   * Edits: Gabriel Taylor
   * Date: 16 March 2016
   * Standardized powershell formatting to improve readability and consistency
@@ -231,13 +227,13 @@ Version History:
   * Updated the script to calculate the length of time it took to process and output that to the
    shell as well as save it to the log.
 
-* Version 4.1 Changes
+* Version 4.1 Changes:
   * Fixed bug in cmtrace function
   * Fixed bug in output log write
   * Removed change history from the script. Changes are in Readme.md. Only latest changes will be in
    the script.
 
-* Version 4.2 Changes
+* Version 4.2 Changes:
   * Fixed bug in ReDownloadMissingFiles behavior
   * Fixed issue with HTTPS download pages
  
@@ -247,7 +243,12 @@ Version History:
   * Updated Switch parameter validation
   * Updated formatting
 
-Version 4.4 Changes:
+* Version 4.4 Changes:
+  * Edits: Lynne Taggart
+  * Fixed bug that didn't allowed pulling Published date and MP version due to MSFT download page layout changes
 
-* Fixed bug that didn't allowed pulling Published date and MP version due to MSFT download page layout
- changes
+* Version 4.5 Changes:
+  * Edits: David Baumbach
+  * Date: 27 May 2021
+  * Improve file download performance and reliability by using new function 'Save-WebFile' instead of 'Invoke-WebRequest'. With the 'Invoke-WebRequest' command it was previously taking several hours to download all management packs and would fail to download the large (1.5 GB+) files in the Linux Management pack. Now takes 40 minutes.
+  * Apply PSScriptAnalyzer recommendations
