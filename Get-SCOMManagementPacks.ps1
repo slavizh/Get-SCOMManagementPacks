@@ -361,13 +361,12 @@ function Get-MSDownloadFile
                 $FileName = $FileName.Replace("[","(")
                 $FileName = $FileName.Replace("]",")")
 
-                $webClient = Invoke-WebRequest -Uri $URI -OutFile $FullPath -PassThru
-
-                if ($webClient.StatusCode -eq 200)
+                try
                 {
+                    Save-WebFile -Uri $URI -OutFile $FullPath
                     $status = "Download Succeeded"
                 }
-                else
+                catch
                 {
                     $status = "Download Failed"
                 }
@@ -386,6 +385,43 @@ function Get-MSDownloadFile
         }
     }
 }
+
+Function Save-WebFile
+{
+    [CmdletBinding()]
+    Param
+    (
+        [Parameter(Mandatory)]
+        [System.Uri]
+        $Uri,
+
+        [Parameter(Mandatory)]
+        [ValidateScript({Test-Path -Path $_ -IsValid})]
+        [System.String]
+        $OutFile
+    )
+
+    Begin {}
+
+    Process
+    {
+        $webClient = New-Object -TypeName System.Net.WebClient
+
+        try
+        {
+            Write-Verbose -Message "Downloading file '$Uri' to '$OutFile'."
+            $webClient.DownloadFile($Uri, $OutFile)
+        
+        } 
+        catch
+        {
+            throw $_
+        }
+    }
+
+    End {}
+}
+
 #endregion
 
 #region Validate and Prepare the MPPath and Log File Paths
